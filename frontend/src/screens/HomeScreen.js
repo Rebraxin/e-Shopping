@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   homeTitle: {
     textTransform: 'uppercase',
-    paddingBottom: '0.75rem',
+    padding: '1.5rem 0',
   },
 }))
 

@@ -1,15 +1,14 @@
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Link,
-  makeStyles,
-  Typography,
-} from '@material-ui/core'
 import React from 'react'
+import { Link } from 'react-router-dom'
+import Card from '@material-ui/core/Card'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core'
+import CardMedia from '@material-ui/core/CardMedia'
+import Typography from '@material-ui/core/Typography'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import CardActionArea from '@material-ui/core/CardActionArea'
+
 import Rating from './Rating'
 
 const useStyles = makeStyles({
@@ -24,7 +23,12 @@ const useStyles = makeStyles({
   rating: {
     paddingBottom: '0.75rem',
   },
-  price: { marginBottom: '2rem' },
+  price: {
+    marginBottom: '2rem',
+  },
+  routerLink: {
+    textDecoration: 'none',
+  },
 })
 
 const Product = ({ product }) => {
@@ -32,7 +36,7 @@ const Product = ({ product }) => {
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <Link href={`/product/${product._id}`}>
+        <Link to={`/product/${product._id}`}>
           <CardMedia
             className={classes.media}
             image={product.image}
@@ -42,7 +46,7 @@ const Product = ({ product }) => {
       </CardActionArea>
       <CardActions>
         <CardContent>
-          <Link underline="none" href={`/product/${product._id}`}>
+          <Link className={classes.routerLink} to={`/product/${product._id}`}>
             <Typography
               gutterBottom
               variant="subtitle1"
