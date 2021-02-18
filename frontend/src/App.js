@@ -1,20 +1,20 @@
 import React from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import { Box, Container, Typography } from '@material-ui/core'
+import { Container } from '@material-ui/core'
+import HomeScreen from './screens/HomeScreen'
 
 const App = () => {
   return (
-    <Header>
+    <>
+      <Header />
       <main>
-        <Box py={3}>
-          <Container>
-            <Typography variant="h3">Welcome to e-Shopping</Typography>
-          </Container>
-        </Box>
+        <Container>
+          <HomeScreen />
+        </Container>
       </main>
       <Footer />
-    </Header>
+    </>
   )
 }
 
