@@ -8,7 +8,20 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 const theme = createMuiTheme({
   palette: {},
   typography: {
-    fontFamily: "'Nunito Sans', sans-serif",
+    fontFamily:
+      "'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+    h1: { letterSpacing: '0.1em' },
+    h2: { letterSpacing: '0.1em' },
+    h3: { letterSpacing: '0.1em' },
+    h4: { letterSpacing: '0.1em' },
+    h5: { letterSpacing: '0.1em' },
+    h6: { letterSpacing: '0.1em' },
+    body1: { letterSpacing: '0.1em' },
+    body2: { letterSpacing: '0.1em' },
+    subtitle1: { letterSpacing: '0.1em' },
+    subtitle2: { letterSpacing: '0.1em' },
+    caption: { letterSpacing: '0.1em' },
+    overline: { letterSpacing: '0.1em' },
   },
 })
 

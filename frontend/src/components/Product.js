@@ -8,28 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import CardActionArea from '@material-ui/core/CardActionArea'
-
 import Rating from './Rating'
-
-const useStyles = makeStyles({
-  root: {
-    padding: '0.75rem',
-    height: '100%',
-  },
-  media: {
-    height: 0,
-    paddingTop: '80%',
-  },
-  rating: {
-    paddingBottom: '0.75rem',
-  },
-  price: {
-    marginBottom: '2rem',
-  },
-  routerLink: {
-    textDecoration: 'none',
-  },
-})
 
 const Product = ({ product }) => {
   const classes = useStyles()
@@ -72,3 +51,23 @@ const Product = ({ product }) => {
 }
 
 export default Product
+
+const useStyles = makeStyles({
+  root: {
+    padding: '0.75rem',
+    height: '100%',
+  },
+  media: {
+    height: 0,
+    paddingTop: '80%',
+  },
+  rating: {
+    paddingBottom: '0.75rem',
+  },
+  price: {
+    marginBottom: '2rem',
+  },
+  routerLink: {
+    textDecoration: 'none',
+  },
+})
