@@ -191,7 +191,7 @@ const Header = (props) => {
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              e-Shopping
+              eShopping
             </Typography>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
