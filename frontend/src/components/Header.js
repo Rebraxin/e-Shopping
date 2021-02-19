@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Menu from '@material-ui/core/Menu'
 import Slide from '@material-ui/core/Slide'
 import Badge from '@material-ui/core/Badge'
@@ -78,6 +79,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  links: {
+    textDecoration: 'none',
+    color: 'inherit',
+  },
 }))
 
 function HideOnScroll(props) {
@@ -95,8 +100,9 @@ const Header = (props) => {
   const { children } = props
 
   const classes = useStyles()
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
+  const [user] = useState()
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
 
   const isMenuOpen = Boolean(anchorEl)
 
@@ -130,8 +136,12 @@ const Header = (props) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Link to="/profile" className={classes.links}>
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      </Link>
+      <Link to="/account" className={classes.links}>
+        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      </Link>
     </Menu>
   )
 
@@ -162,6 +172,16 @@ const Header = (props) => {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
+      <Link to="/cart" className={classes.links}>
+        <MenuItem>
+          <IconButton aria-label="show 6 cart items" color="inherit">
+            <Badge badgeContent={6} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+          <p>Cart</p>
+        </MenuItem>
+      </Link>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
@@ -190,9 +210,11 @@ const Header = (props) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" noWrap>
-              eShopping
-            </Typography>
+            <Link to="/" className={classes.links}>
+              <Typography className={classes.title} variant="h6" noWrap>
+                eShopping
+              </Typography>
+            </Link>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton aria-label="show 4 new mails" color="inherit">
@@ -205,12 +227,32 @@ const Header = (props) => {
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              <IconButton aria-label="show 6 cart items" color="inherit">
-                <Badge badgeContent={6} color="secondary">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
+              <Link to="/cart" className={classes.links}>
+                <IconButton aria-label="show 6 cart items" color="inherit">
+                  <Badge badgeContent={6} color="secondary">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+              </Link>
+              {user ? (
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              ) : (
+                <Link to="/login" className={classes.links}>
+                  <IconButton aria-label="login page" color="inherit">
+                    <AccountCircle />
+                  </IconButton>
+                </Link>
+              )}
+              {/* <IconButton
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
@@ -219,7 +261,7 @@ const Header = (props) => {
                 color="inherit"
               >
                 <AccountCircle />
-              </IconButton>
+              </IconButton> */}
             </div>
             <div className={classes.sectionMobile}>
               <IconButton
