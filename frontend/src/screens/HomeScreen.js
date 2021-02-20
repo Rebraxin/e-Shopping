@@ -1,18 +1,22 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Product from '../components/Product'
-import products from '../products'
-
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  homeTitle: {
-    textTransform: 'uppercase',
-    padding: '1.5rem 0',
-  },
-}))
 
 const HomeScreen = () => {
   const classes = useStyles()
+
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await axios.get('/api/products')
+      setProducts(data)
+    }
+
+    fetchProducts()
+  }, [])
+
   return (
     <>
       <Typography variant="h4" className={classes.homeTitle}>
@@ -30,3 +34,11 @@ const HomeScreen = () => {
 }
 
 export default HomeScreen
+
+const useStyles = makeStyles((theme) => ({
+  root: {},
+  homeTitle: {
+    textTransform: 'uppercase',
+    padding: '1.5rem 0',
+  },
+}))
