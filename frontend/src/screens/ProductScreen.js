@@ -28,7 +28,7 @@ const ProductScreen = ({ match }) => {
     }
 
     fetchProduct()
-  }, [match.params.id])
+  }, [match])
 
   return (
     <>
