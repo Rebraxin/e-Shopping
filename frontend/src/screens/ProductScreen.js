@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import axios from 'axios'
+import CustomLoader from '../components/CustomLoader'
 
 const ProductScreen = ({ match }) => {
   const classes = useStyles()
@@ -33,7 +34,7 @@ const ProductScreen = ({ match }) => {
   return (
     <>
       {loading ? (
-        <p>Loading...</p>
+        <CustomLoader />
       ) : (
         <>
           <Button variant="text" className={classes.backBtn}>
