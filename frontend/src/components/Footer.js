@@ -8,7 +8,7 @@ const Footer = () => {
       <Container className={classes.root}>
         <Grid item>
           <Box my={3} align="center">
-            Copyright &copy; e-Shopping
+            Copyright &copy; eShopping
           </Box>
         </Grid>
       </Container>

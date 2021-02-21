@@ -1,30 +1,33 @@
-import { Grid, makeStyles, Typography } from '@material-ui/core'
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core/'
+import Typography from '@material-ui/core/Typography'
 import Product from '../components/Product'
 import CustomLoader from '../components/CustomLoader'
+import { getProductList } from '../actions/productActions'
+import { Alert, AlertTitle } from '@material-ui/lab'
 
 const HomeScreen = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const productList = useSelector((state) => state.productList)
+  const { loading, error, products } = productList
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true)
-      const { data } = await axios.get('/api/products')
-      setProducts(data)
-      setLoading(false)
-    }
-
-    fetchProducts()
-  }, [])
+    dispatch(getProductList())
+  }, [dispatch])
 
   return (
     <>
       {loading ? (
         <CustomLoader />
+      ) : error ? (
+        <Alert className={classes.alert} severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
       ) : (
         <>
           <Typography variant="h4" className={classes.homeTitle}>
@@ -47,6 +50,9 @@ export default HomeScreen
 
 const useStyles = makeStyles((theme) => ({
   root: {},
+  alert: {
+    marginTop: theme.spacing(5),
+  },
   homeTitle: {
     textTransform: 'uppercase',
     padding: '1.5rem 0',
