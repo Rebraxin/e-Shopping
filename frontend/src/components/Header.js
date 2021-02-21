@@ -17,6 +17,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -99,6 +100,12 @@ function HideOnScroll(props) {
 const Header = (props) => {
   const { children } = props
 
+  const cart = useSelector((state) => state.cart)
+  const { cartItems } = cart
+
+  const totalCartItems = cartItems.reduce(
+    (accumulator, item) => accumulator + item.qty, 0)
+
   const classes = useStyles()
   const [user] = useState()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -175,7 +182,7 @@ const Header = (props) => {
       <Link to="/cart" className={classes.links}>
         <MenuItem>
           <IconButton aria-label="show 6 cart items" color="inherit">
-            <Badge badgeContent={6} color="secondary">
+            <Badge badgeContent={totalCartItems} color="secondary">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
@@ -229,7 +236,7 @@ const Header = (props) => {
               </IconButton>
               <Link to="/cart" className={classes.links}>
                 <IconButton aria-label="show 6 cart items" color="inherit">
-                  <Badge badgeContent={6} color="secondary">
+                  <Badge badgeContent={totalCartItems} color="secondary">
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>
