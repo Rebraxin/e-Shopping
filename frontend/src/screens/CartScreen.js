@@ -45,24 +45,26 @@ const CatScreen = ({ match, location, history }) => {
 
   return (
     <>
-      <Grid item xs={12}>
-        <Typography variant="h4" className={classes.cartTitle}>
-          Shopping Cart
-        </Typography>
-      </Grid>
-      <Grid container>
-        <Grid item md={8}>
-          {cartItems.length === 0 ? (
-            <Alert className={classes.alert} severity="info">
-              <AlertTitle>Info</AlertTitle>
-              Your cart is empty{' '}
-              <Button size="small" color="primary/" className={classes.backBtn}>
-                <Link className={classes.links} to="/">
-                  Go back
-                </Link>
-              </Button>
-            </Alert>
-          ) : (
+      {cartItems.length === 0 ? (
+        <Grid item xs={12} className={classes.alert}>
+          <Alert severity="info">
+            <AlertTitle>Info</AlertTitle>
+            Your cart is empty{' '}
+            <Button size="small" color="primary" className={classes.backBtn}>
+              <Link className={classes.links} to="/">
+                Go back
+              </Link>
+            </Button>
+          </Alert>
+        </Grid>
+      ) : (
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant="h4" className={classes.cartTitle}>
+              Shopping Cart
+            </Typography>
+          </Grid>
+          <Grid item md={8}>
             <List>
               {cartItems.map((item) => (
                 <ListItem key={item.product}>
@@ -117,50 +119,54 @@ const CatScreen = ({ match, location, history }) => {
                 </ListItem>
               ))}
             </List>
-          )}
-        </Grid>
-        <Grid item md={4} className={classes.cardInfos}>
-          <Card>
-            <List>
-              <ListItem
-                style={{ width: '100%', margin: 'auto', textAlign: 'center' }}
-              >
-                <Typography align="center" variant="h5" component="h3">
-                  Subtotal (
-                  {cartItems.reduce(
-                    (accumulator, item) => accumulator + item.qty,
-                    0
-                  )}
-                  ) items
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography component="p">
-                  $
-                  {cartItems
-                    .reduce(
-                      (accumulator, item) =>
-                        accumulator + item.qty * item.price,
-                      0
-                    )
-                    .toFixed(2)}
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  disabled={cartItems.length === 0}
-                  onClick={checkoutHandler}
+          </Grid>
+          <Grid item md={4} className={classes.cardInfos}>
+            <Card>
+              <List>
+                <ListItem
+                  style={{
+                    width: '100%',
+                    margin: 'auto',
+                    textAlign: 'center',
+                  }}
                 >
-                  Proceed To Checkout
-                </Button>
-              </ListItem>
-            </List>
-          </Card>
+                  <Typography align="center" variant="h5" component="h3">
+                    Subtotal (
+                    {cartItems.reduce(
+                      (accumulator, item) => accumulator + item.qty,
+                      0
+                    )}
+                    ) items
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography component="p">
+                    $
+                    {cartItems
+                      .reduce(
+                        (accumulator, item) =>
+                          accumulator + item.qty * item.price,
+                        0
+                      )
+                      .toFixed(2)}
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    disabled={cartItems.length === 0}
+                    onClick={checkoutHandler}
+                  >
+                    Proceed To Checkout
+                  </Button>
+                </ListItem>
+              </List>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </>
   )
 }
@@ -182,10 +188,9 @@ const useStyles = makeStyles((theme) => ({
     padding: '1.5rem 0',
   },
   alert: {
-    alert: {
-      marginTop: theme.spacing(5),
-    },
+    marginTop: theme.spacing(5),
   },
+
   links: {
     textDecoration: 'none',
     color: 'inherit',
