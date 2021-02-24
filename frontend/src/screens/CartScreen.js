@@ -5,7 +5,6 @@ import { addToCart } from '../actions/cartActions'
 import { removeFromCart } from '../actions/cartActions'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import { Alert, AlertTitle } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -17,6 +16,7 @@ import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import DeleteIcon from '@material-ui/icons/Delete'
+import CustomAlert from '../components/CustomAlert'
 
 const CatScreen = ({ match, location, history }) => {
   const classes = useStyles()
@@ -47,15 +47,11 @@ const CatScreen = ({ match, location, history }) => {
     <>
       {cartItems.length === 0 ? (
         <Grid item xs={12} className={classes.alert}>
-          <Alert severity="info">
-            <AlertTitle>Info</AlertTitle>
-            Your cart is empty{' '}
-            <Button size="small" color="primary" className={classes.backBtn}>
-              <Link className={classes.links} to="/">
-                Go back
-              </Link>
-            </Button>
-          </Alert>
+          <CustomAlert
+            alertType="info"
+            alertTitle="Info"
+            alertText="Your cart is empty"
+          />
         </Grid>
       ) : (
         <Grid container>
