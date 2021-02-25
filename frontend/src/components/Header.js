@@ -110,9 +110,11 @@ const Header = (props) => {
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      className={classes.wrapperMenuMobile}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       id={mobileMenuId}
       keepMounted
+      getContentAnchorEl={null}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -143,17 +145,37 @@ const Header = (props) => {
           <p>Cart</p>
         </MenuItem>
       </Link>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
+      {userInfo ? (
+        <div>
+          <Link to="/profile" className={classes.links}>
+            <MenuItem onClick={handleMenuClose}>
+              <IconButton aria-label="show 6 cart items" color="inherit">
+                <AccountCircle />
+              </IconButton>
+              <Typography className={classes.textMenu}>Profile</Typography>
+            </MenuItem>
+          </Link>
+          <Link to="" className={classes.links}>
+            <MenuItem onClick={logoutHandler}>
+              <IconButton aria-label="show 6 cart items" color="inherit">
+                <ExitToAppIcon />
+              </IconButton>
+              <Typography className={classes.textMenu}>Logout</Typography>
+            </MenuItem>
+          </Link>
+        </div>
+      ) : (
+        <Link
+          to="/login"
+          style={{ padding: '0.25rem' }}
+          className={classes.links}
         >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+          <Button variant="outlined" aria-label="login page" color="inherit">
+            <AccountCircle style={{ marginRight: '0.5rem' }} />
+            Sign In
+          </Button>
+        </Link>
+      )}
     </Menu>
   )
 
@@ -317,5 +339,8 @@ const useStyles = makeStyles((theme) => ({
   },
   wrapperMenu: {
     marginTop: '0.5rem',
+  },
+  wrapperMenuMobile: {
+    marginTop: '0.25rem',
   },
 }))
