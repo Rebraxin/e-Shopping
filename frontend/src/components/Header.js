@@ -7,17 +7,19 @@ import AppBar from '@material-ui/core/AppBar'
 import MailIcon from '@material-ui/icons/Mail'
 import MenuIcon from '@material-ui/icons/Menu'
 import Toolbar from '@material-ui/core/Toolbar'
-import { CssBaseline } from '@material-ui/core'
+import { Button, CssBaseline } from '@material-ui/core'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import AccountCircle from '@material-ui/icons/AccountCircle'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../actions/userActions'
 
 function HideOnScroll(props) {
   const { children } = props
@@ -32,9 +34,13 @@ function HideOnScroll(props) {
 
 const Header = (props) => {
   const { children } = props
+  const dispatch = useDispatch()
 
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   const totalCartItems = cartItems.reduce(
     (accumulator, item) => accumulator + item.qty,
@@ -42,7 +48,6 @@ const Header = (props) => {
   )
 
   const classes = useStyles()
-  const [user] = useState()
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
 
@@ -63,6 +68,12 @@ const Header = (props) => {
     handleMobileMenuClose()
   }
 
+  const logoutHandler = () => {
+    setAnchorEl(null)
+    handleMobileMenuClose()
+    dispatch(logout())
+  }
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget)
   }
@@ -70,19 +81,27 @@ const Header = (props) => {
   const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
+      className={classes.wrapperMenu}
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       id={menuId}
       keepMounted
+      getContentAnchorEl={null}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
       <Link to="/profile" className={classes.links}>
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <AccountCircle />
+          <Typography className={classes.textMenu}>Profile</Typography>
+        </MenuItem>
       </Link>
-      <Link to="/account" className={classes.links}>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Link to="" className={classes.links}>
+        <MenuItem onClick={logoutHandler}>
+          <ExitToAppIcon />
+          <Typography className={classes.textMenu}>Logout</Typography>
+        </MenuItem>
       </Link>
     </Menu>
   )
@@ -176,7 +195,7 @@ const Header = (props) => {
                   </Badge>
                 </IconButton>
               </Link>
-              {user ? (
+              {userInfo ? (
                 <IconButton
                   edge="end"
                   aria-label="account of current user"
@@ -188,10 +207,19 @@ const Header = (props) => {
                   <AccountCircle />
                 </IconButton>
               ) : (
-                <Link to="/login" className={classes.links}>
-                  <IconButton aria-label="login page" color="inherit">
-                    <AccountCircle />
-                  </IconButton>
+                <Link
+                  to="/login"
+                  style={{ padding: '0.25rem' }}
+                  className={classes.links}
+                >
+                  <Button
+                    variant="outlined"
+                    aria-label="login page"
+                    color="inherit"
+                  >
+                    <AccountCircle style={{ marginRight: '0.5rem' }} />
+                    Sign In
+                  </Button>
                 </Link>
               )}
             </div>
@@ -283,5 +311,11 @@ const useStyles = makeStyles((theme) => ({
   links: {
     textDecoration: 'none',
     color: 'inherit',
+  },
+  textMenu: {
+    padding: '0.25rem 1.5rem 0.25rem 0.75rem',
+  },
+  wrapperMenu: {
+    marginTop: '0.5rem',
   },
 }))
