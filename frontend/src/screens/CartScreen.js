@@ -6,6 +6,7 @@ import { removeFromCart } from '../actions/cartActions'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core'
+import Container from '@material-ui/core/Container'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import IconButton from '@material-ui/core/IconButton'
@@ -46,13 +47,15 @@ const CatScreen = ({ match, location, history }) => {
   return (
     <>
       {cartItems.length === 0 ? (
-        <Grid item xs={12} className={classes.alert}>
-          <CustomAlert
-            alertType="info"
-            alertTitle="Info"
-            alertText="Your cart is empty"
-          />
-        </Grid>
+        <Container maxWidth="sm">
+          <Grid item xs={12} className={classes.alert}>
+            <CustomAlert
+              alertType="info"
+              alertTitle="Info"
+              alertText="Your cart is empty"
+            />
+          </Grid>
+        </Container>
       ) : (
         <Grid container>
           <Grid item xs={12}>

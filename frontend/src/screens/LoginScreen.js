@@ -71,7 +71,7 @@ const LoginScreen = ({ location, history }) => {
                   <Box margin="auto" marginTop={4}>
                     <Field
                       fullWidth
-                      autoFocus={true}
+                      // autoFocus={true}
                       name="email"
                       component={TextField}
                       label="Email"
