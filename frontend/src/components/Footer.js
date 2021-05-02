@@ -18,6 +18,6 @@ const Footer = () => {
 
 export default Footer
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
 }))

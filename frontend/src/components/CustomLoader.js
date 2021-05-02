@@ -8,7 +8,7 @@ const CustomLoader = () => {
 
 export default CustomLoader
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     position: 'absolute',
     top: '45%',

@@ -2,7 +2,7 @@ import { SET_SNACKBAR } from '../constants/snackbarContants'
 
 export const snackbarReducer = (state = {}, action) => {
   switch (action.type) {
-    case SET_SNACKBAR:
+    case SET_SNACKBAR: {
       const { snOpen, snType, snTitle, snMessage } = action.snackbar
       return {
         ...state,
@@ -11,6 +11,7 @@ export const snackbarReducer = (state = {}, action) => {
         snTitle,
         snMessage,
       }
+    }
 
     default:
       return state

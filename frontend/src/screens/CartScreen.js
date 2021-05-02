@@ -59,7 +59,11 @@ const CatScreen = ({ match, location, history }) => {
       ) : (
         <Grid container>
           <Grid item xs={12}>
-            <Typography variant="h4" className={classes.cartTitle}>
+            <Typography
+              className={classes.homeTitle}
+              color="primary"
+              variant="h4"
+            >
               Shopping Cart
             </Typography>
           </Grid>
@@ -174,6 +178,10 @@ export default CatScreen
 
 const useStyles = makeStyles((theme) => ({
   root: {},
+  homeTitle: {
+    padding: '1.5rem 0 1.5rem 1rem',
+    fontWeight: 'bold',
+  },
   dropdown: {
     '& .MuiSelect-root': {
       textAlign: 'center',
