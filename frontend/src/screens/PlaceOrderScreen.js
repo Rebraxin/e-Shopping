@@ -1,34 +1,42 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Field, Form, Formik } from 'formik'
-import { TextField } from 'formik-material-ui'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import CustomAlert from '../components/CustomAlert'
-import {
-  Avatar,
-  Collapse,
-  Container,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  makeStyles,
-  Paper,
-  Typography,
-} from '@material-ui/core'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import Collapse from '@material-ui/core/Collapse'
+import Container from '@material-ui/core/Container'
+import Divider from '@material-ui/core/Divider'
+import Grid from '@material-ui/core/Grid'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core'
 import CustomCheckoutStepper from '../components/CustomCheckoutStepper'
 import FormContainer from '../components/FormContainer'
 import { Link } from 'react-router-dom'
 
 const PlaceOrderScreen = () => {
-  const dispatch = useDispatch()
   const classes = useStyles()
 
   const cart = useSelector((state) => state.cart)
   const { cartItems, paymentMethod, shippingAddress } = cart
 
-  console.log(cartItems)
+  // Calculate prices
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2)
+  }
+
+  cart.itemsPrice = addDecimals(
+    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  )
+  cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 10)
+  cart.taxePrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
+  cart.totalPrice = (
+    Number(cart.itemsPrice) +
+    Number(cart.shippingPrice) +
+    Number(cart.taxePrice)
+  ).toFixed(2)
 
   return (
     <>
@@ -103,8 +111,8 @@ const PlaceOrderScreen = () => {
                 ) : (
                   <>
                     {cartItems.map((item, idx) => (
-                      <>
-                        <ListItem key={item.product} className={classes.nested}>
+                      <React.Fragment key={item.name}>
+                        <ListItem className={classes.nested}>
                           <Grid container alignItems="center">
                             <Grid item md={1}>
                               <Avatar
@@ -133,7 +141,7 @@ const PlaceOrderScreen = () => {
                         {idx < cartItems.length - 1 && (
                           <Divider variant="middle" />
                         )}
-                      </>
+                      </React.Fragment>
                     ))}
                   </>
                 )}
@@ -141,8 +149,62 @@ const PlaceOrderScreen = () => {
             </Collapse>
           </List>
         </Grid>
-        <Grid item md={4} style={{ border: '1px solid blue' }}>
-          <p>test</p>
+        <Grid item md={4} className={classes.rightSide}>
+          <List className={classes.listBorder}>
+            <ListItem alignItems="flex-start">
+              <ListItemText primary="Order Summary" />
+            </ListItem>
+            <Divider />
+            <ListItem alignItems="flex-start">
+              <Grid container>
+                <Grid item md={6}>
+                  <Typography>Items</Typography>
+                </Grid>
+                <Grid item md={6}>
+                  <Typography>${cart.itemsPrice}</Typography>
+                </Grid>
+              </Grid>
+            </ListItem>
+            <Divider />
+            <ListItem alignItems="flex-start">
+              <Grid container>
+                <Grid item md={6}>
+                  <Typography>Shipping</Typography>
+                </Grid>
+                <Grid item md={6}>
+                  <Typography>${cart.shippingPrice}</Typography>
+                </Grid>
+              </Grid>
+            </ListItem>
+            <Divider />
+            <ListItem alignItems="flex-start">
+              <Grid container>
+                <Grid item md={6}>
+                  <Typography>Tax</Typography>
+                </Grid>
+                <Grid item md={6}>
+                  <Typography>${cart.taxePrice}</Typography>
+                </Grid>
+              </Grid>
+            </ListItem>
+            <Divider />
+            <ListItem alignItems="flex-start">
+              <Grid container>
+                <Grid item md={6}>
+                  <Typography>Total</Typography>
+                </Grid>
+                <Grid item md={6}>
+                  <Typography>${cart.totalPrice}</Typography>
+                </Grid>
+              </Grid>
+            </ListItem>
+            <Divider />
+            <ListItem alignItems="flex-start">
+              <Button variant="contained" color="primary" fullWidth>
+                place order
+              </Button>
+            </ListItem>
+          </List>
         </Grid>
       </Grid>
     </>
@@ -155,6 +217,11 @@ const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
   },
+  listBorder: {
+    width: '100%',
+    border: '1px solid hsla(0, 0%, 0%, 0.25)',
+    borderRadius: '0.25rem',
+  },
   inline: {
     display: 'inline',
   },
@@ -162,6 +229,11 @@ const useStyles = makeStyles(() => ({
     marginTop: '1rem',
     marginBottom: '1rem',
     paddingRight: '0.5rem',
+  },
+  rightSide: {
+    marginTop: '1rem',
+    marginBottom: '1rem',
+    paddingLeft: '0.5rem',
   },
   avatar: {
     width: '55px',
