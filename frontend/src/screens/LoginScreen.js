@@ -71,7 +71,6 @@ const LoginScreen = ({ location, history }) => {
                   <Box margin="auto" marginTop={4}>
                     <Field
                       fullWidth
-                      // autoFocus={true}
                       name="email"
                       component={TextField}
                       label="Email"
@@ -128,7 +127,7 @@ const LoginScreen = ({ location, history }) => {
 
 export default LoginScreen
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
   homeTitle: {
     padding: '1.5rem 0',
@@ -156,7 +155,6 @@ const validationLoginForm = {
     .email("L'adresse email n'est pas valide")
     .required('Adresse email requise'),
   password: Yup.string()
-    // @TODO : Change validation to 8 characters
     .min(3, 'Doit comprendre 8 caractères au minimum')
     .required('Mot de passe requis'),
 }

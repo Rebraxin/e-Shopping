@@ -30,7 +30,11 @@ const HomeScreen = () => {
         </Alert>
       ) : (
         <>
-          <Typography variant="h4" className={classes.homeTitle}>
+          <Typography
+            className={classes.homeTitle}
+            color="primary"
+            variant="h4"
+          >
             Lastest Products
           </Typography>
           <Grid container alignItems="stretch" spacing={2}>
@@ -54,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(5),
   },
   homeTitle: {
-    textTransform: 'uppercase',
     padding: '1.5rem 0',
+    fontWeight: 'bold',
   },
 }))

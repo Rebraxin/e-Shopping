@@ -74,8 +74,7 @@ const RegisterScreen = ({ location, history }) => {
                   <Box margin="auto" marginTop={4}>
                     <Field
                       fullWidth
-                      // autoFocus={true}
-                      name="email"
+                      name="name"
                       component={TextField}
                       label="Name"
                       variant="outlined"
@@ -154,7 +153,7 @@ const RegisterScreen = ({ location, history }) => {
 
 export default RegisterScreen
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
   homeTitle: {
     padding: '1.5rem 0',

@@ -162,10 +162,11 @@ const ProfileScreen = ({ history }) => {
 
 export default ProfileScreen
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
   homeTitle: {
     padding: '1.5rem 0',
+    fontWeight: 'bold',
   },
   registerBtn: {
     padding: '1.5rem 0',

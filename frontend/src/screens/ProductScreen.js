@@ -36,7 +36,7 @@ const ProductScreen = ({ history, match }) => {
 
   return (
     <>
-      <Button variant="text" className={classes.backBtn}>
+      <Button variant="outlined" className={classes.backBtn}>
         <Link className={classes.links} to="/">
           Go back
         </Link>
@@ -188,7 +188,9 @@ const useStyles = makeStyles((theme) => ({
   },
   backBtn: {
     margin: '1rem 0',
-    color: theme.palette.common.black,
+    fontWeight: '700',
+    textTransform: 'capitalize',
+    color: theme.palette.primary.main,
   },
   media: {
     height: 0,
