@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import CustomAlert from '../components/CustomAlert'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -15,12 +15,25 @@ import { makeStyles } from '@material-ui/core'
 import CustomCheckoutStepper from '../components/CustomCheckoutStepper'
 import FormContainer from '../components/FormContainer'
 import { Link } from 'react-router-dom'
+import { createOrder } from '../actions/orderActions'
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = (props) => {
+  const { history } = props
+
   const classes = useStyles()
+  const dispatch = useDispatch()
 
   const cart = useSelector((state) => state.cart)
   const { cartItems, paymentMethod, shippingAddress } = cart
+
+  const orderCreate = useSelector((state) => state.orderCreate)
+  const { order, success, error } = orderCreate
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/order/${order._id}`)
+    }
+  }, [history, success])
 
   // Calculate prices
   const addDecimals = (num) => {
@@ -37,6 +50,22 @@ const PlaceOrderScreen = () => {
     Number(cart.shippingPrice) +
     Number(cart.taxePrice)
   ).toFixed(2)
+
+  const placeOrderHandler = () => {
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxemPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    )
+  }
+
+  console.log(cart.paymentMethod)
 
   return (
     <>
@@ -199,8 +228,25 @@ const PlaceOrderScreen = () => {
               </Grid>
             </ListItem>
             <Divider />
+            {error && (
+              <>
+                <ListItem alignItems="flex-start">
+                  <CustomAlert
+                    alertType="error"
+                    alertTitle="Error"
+                    alertText={error}
+                  />
+                </ListItem>
+                <Divider />
+              </>
+            )}
             <ListItem alignItems="flex-start">
-              <Button variant="contained" color="primary" fullWidth>
+              <Button
+                onClick={placeOrderHandler}
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
                 place order
               </Button>
             </ListItem>

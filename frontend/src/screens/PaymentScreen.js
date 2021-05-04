@@ -43,7 +43,7 @@ const PaymentScreen = (props) => {
             paymentMethod: 'PayPal',
           }}
           onSubmit={(method, { setSubmitting, resetForm }) => {
-            dispatch(savePaymentMethod(method))
+            dispatch(savePaymentMethod(method.paymentMethod))
             history.push('/place-order')
             setSubmitting(false)
             resetForm()
