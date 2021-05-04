@@ -1,11 +1,41 @@
-import React from "react";
+import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import { Container } from '@material-ui/core'
+import CustomSnackbar from './components/CustomSnackbar'
+import HomeScreen from './screens/HomeScreen'
+import ProductScreen from './screens/ProductScreen'
+import CartScreen from './screens/CartScreen'
+import LoginScreen from './screens/LoginScreen'
+import RegisterScreen from './screens/RegisterScreen'
+import ProfileScreen from './screens/ProfileScreen'
+import ShippingScreen from './screens/ShippingScreen'
+import PaymentScreen from './screens/PaymentScreen'
+import PlaceOrderScreen from './screens/PlaceOrderScreen'
 
 const App = () => {
   return (
-    <>
-      <h1>Welcome to e-Shopping</h1>
-    </>
-  );
-};
+    <Router>
+      <CustomSnackbar />
+      <Header>
+        <main>
+          <Container>
+            <Route path="/" component={HomeScreen} exact />
+            <Route path="/product/:id" component={ProductScreen} />
+            <Route path="/cart/:id?" component={CartScreen} />
+            <Route path="/login" component={LoginScreen} />
+            <Route path="/register" component={RegisterScreen} />
+            <Route path="/profile" component={ProfileScreen} />
+            <Route path="/shipping" component={ShippingScreen} />
+            <Route path="/payment" component={PaymentScreen} />
+            <Route path="/place-order" component={PlaceOrderScreen} />
+          </Container>
+        </main>
+        <Footer />
+      </Header>
+    </Router>
+  )
+}
 
-export default App;
+export default App
