@@ -1,7 +1,9 @@
 import axios from 'axios'
+
 import { PRODUCT_LIST_REQUEST } from '../constants/productConstants'
 import { PRODUCT_LIST_SUCCESS } from '../constants/productConstants'
 import { PRODUCT_LIST_FAIL } from '../constants/productConstants'
+
 import { PRODUCT_DETAILS_REQUEST } from '../constants/productConstants'
 import { PRODUCT_DETAILS_SUCCESS } from '../constants/productConstants'
 import { PRODUCT_DETAILS_FAIL } from '../constants/productConstants'

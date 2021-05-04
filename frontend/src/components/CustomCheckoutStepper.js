@@ -1,10 +1,8 @@
-import {
-  makeStyles,
-  Step,
-  StepLabel,
-  Stepper,
-  Typography,
-} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
+import Step from '@material-ui/core/Step'
+import StepLabel from '@material-ui/core/StepLabel'
+import Stepper from '@material-ui/core/Stepper'
+import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { Link } from 'react-router-dom'
 

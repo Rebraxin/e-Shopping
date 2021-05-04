@@ -1,13 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles, Snackbar } from '@material-ui/core'
-// import MuiAlert from '@material-ui/labAlert'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import { setSnackbar } from '../actions/snackbarActions'
-
-// function Alert(props) {
-//   return <MuiAlert elevation={6} variant="filled" {...props} />
-// }
 
 const useStyles = makeStyles((theme) => ({
   root: {

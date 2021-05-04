@@ -1,16 +1,21 @@
 import { USER_LOGIN_REQUEST } from '../constants/userConstants'
 import { USER_LOGIN_SUCCESS } from '../constants/userConstants'
 import { USER_LOGIN_FAIL } from '../constants/userConstants'
+
 import { USER_REGISTER_REQUEST } from '../constants/userConstants'
 import { USER_REGISTER_SUCCESS } from '../constants/userConstants'
 import { USER_REGISTER_FAIL } from '../constants/userConstants'
+
 import { USER_DETAILS_REQUEST } from '../constants/userConstants'
 import { USER_DETAILS_SUCCESS } from '../constants/userConstants'
 import { USER_DETAILS_FAIL } from '../constants/userConstants'
+
 import { USER_UPDATE_PROFILE_REQUEST } from '../constants/userConstants'
 import { USER_UPDATE_PROFILE_SUCCESS } from '../constants/userConstants'
 import { USER_UPDATE_PROFILE_FAIL } from '../constants/userConstants'
+
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+
 import { USER_LOGOUT } from '../constants/userConstants'
 
 export const userLoginReducer = (state = {}, action) => {
