@@ -12,60 +12,30 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core'
-import CustomCheckoutStepper from '../components/CustomCheckoutStepper'
+import CustomLoader from '../components/CustomLoader'
 import FormContainer from '../components/FormContainer'
 import { Link } from 'react-router-dom'
-import { createOrder } from '../actions/orderActions'
+import { getOrderDetails } from '../actions/orderActions'
 
-const PlaceOrderScreen = (props) => {
-  const { history } = props
+const OrderScreen = (props) => {
+  const { match } = props
+  const orderId = match.params.id
 
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const cart = useSelector((state) => state.cart)
-  const { cartItems, paymentMethod, shippingAddress } = cart
-
-  const orderCreate = useSelector((state) => state.orderCreate)
-  const { order, success, error } = orderCreate
+  const orderDetails = useSelector((state) => state.orderDetails)
+  const { order, loading, error } = orderDetails
 
   useEffect(() => {
-    if (success) {
-      history.push(`/order/${order._id}`)
-    }
-  }, [history, success])
+    dispatch(getOrderDetails(orderId))
+  }, [])
 
-  // Calculate prices
-  const addDecimals = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2)
-  }
-
-  cart.itemsPrice = addDecimals(
-    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  )
-  cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 10)
-  cart.taxePrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
-  cart.totalPrice = (
-    Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxePrice)
-  ).toFixed(2)
-
-  const placeOrderHandler = () => {
-    dispatch(
-      createOrder({
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
-        itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
-        taxemPrice: cart.taxPrice,
-        totalPrice: cart.totalPrice,
-      })
-    )
-  }
-
-  return (
+  return loading ? (
+    <CustomLoader />
+  ) : error ? (
+    <CustomAlert alertType="error" alertTitle="Error" alertText={error} />
+  ) : (
     <>
       <FormContainer>
         <Grid>
@@ -75,11 +45,8 @@ const PlaceOrderScreen = (props) => {
             align="center"
             variant="h4"
           >
-            Place Order
+            Order number: {order._id}
           </Typography>
-          <Container maxWidth="sm">
-            <CustomCheckoutStepper step={4} />
-          </Container>
         </Grid>
       </FormContainer>
       <Grid container>
@@ -95,9 +62,10 @@ const PlaceOrderScreen = (props) => {
                     className={classes.inline}
                     color="textPrimary"
                   >
-                    <b>Address</b>: {shippingAddress.address},{' '}
-                    {shippingAddress.postalCode} {shippingAddress.city},{' '}
-                    {shippingAddress.country}
+                    <b>Address</b>: {order.shippingAddress.address},{' '}
+                    {order.shippingAddress.postalCode}{' '}
+                    {order.shippingAddress.city},{' '}
+                    {order.shippingAddress.country}
                   </Typography>
                 }
               />
@@ -113,7 +81,8 @@ const PlaceOrderScreen = (props) => {
                     className={classes.inline}
                     color="textPrimary"
                   >
-                    <b>Method</b>: {paymentMethod ? paymentMethod : ''}
+                    <b>Method</b>:{' '}
+                    {order.paymentMethod ? order.paymentMethod : ''}
                   </Typography>
                 }
               />
@@ -124,19 +93,19 @@ const PlaceOrderScreen = (props) => {
             </ListItem>
             <Collapse in>
               <List component="div" disablePadding>
-                {cartItems.length === 0 ? (
+                {order.orderItems.length === 0 ? (
                   <ListItem alignItems="flex-start">
                     <Grid item xs={12}>
                       <CustomAlert
                         alertType="info"
                         alertTitle="Info"
-                        alertText="Your cart is empty"
+                        alertText="Order is empty"
                       />
                     </Grid>
                   </ListItem>
                 ) : (
                   <>
-                    {cartItems.map((item, idx) => (
+                    {order.orderItems.map((item, idx) => (
                       <React.Fragment key={item.name}>
                         <ListItem className={classes.nested}>
                           <Grid container alignItems="center">
@@ -164,7 +133,7 @@ const PlaceOrderScreen = (props) => {
                             </Grid>
                           </Grid>
                         </ListItem>
-                        {idx < cartItems.length - 1 && (
+                        {idx < order.orderItems.length - 1 && (
                           <Divider variant="middle" />
                         )}
                       </React.Fragment>
@@ -187,7 +156,7 @@ const PlaceOrderScreen = (props) => {
                   <Typography>Items</Typography>
                 </Grid>
                 <Grid item md={6}>
-                  <Typography>${cart.itemsPrice}</Typography>
+                  <Typography>${order.itemsPrice}</Typography>
                 </Grid>
               </Grid>
             </ListItem>
@@ -198,7 +167,7 @@ const PlaceOrderScreen = (props) => {
                   <Typography>Shipping</Typography>
                 </Grid>
                 <Grid item md={6}>
-                  <Typography>${cart.shippingPrice}</Typography>
+                  <Typography>${order.shippingPrice}</Typography>
                 </Grid>
               </Grid>
             </ListItem>
@@ -209,7 +178,7 @@ const PlaceOrderScreen = (props) => {
                   <Typography>Tax</Typography>
                 </Grid>
                 <Grid item md={6}>
-                  <Typography>${cart.taxePrice}</Typography>
+                  <Typography>${order.taxePrice}</Typography>
                 </Grid>
               </Grid>
             </ListItem>
@@ -220,33 +189,11 @@ const PlaceOrderScreen = (props) => {
                   <Typography>Total</Typography>
                 </Grid>
                 <Grid item md={6}>
-                  <Typography>${cart.totalPrice}</Typography>
+                  <Typography>${order.totalPrice}</Typography>
                 </Grid>
               </Grid>
             </ListItem>
             <Divider />
-            {error && (
-              <>
-                <ListItem alignItems="flex-start">
-                  <CustomAlert
-                    alertType="error"
-                    alertTitle="Error"
-                    alertText={error}
-                  />
-                </ListItem>
-                <Divider />
-              </>
-            )}
-            <ListItem alignItems="flex-start">
-              <Button
-                onClick={placeOrderHandler}
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                place order
-              </Button>
-            </ListItem>
           </List>
         </Grid>
       </Grid>
@@ -254,7 +201,7 @@ const PlaceOrderScreen = (props) => {
   )
 }
 
-export default PlaceOrderScreen
+export default OrderScreen
 
 const useStyles = makeStyles(() => ({
   root: {
