@@ -2,9 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomAlert from '../components/CustomAlert'
 import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
 import Collapse from '@material-ui/core/Collapse'
-import Container from '@material-ui/core/Container'
 import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
@@ -26,6 +24,17 @@ const OrderScreen = (props) => {
 
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
+
+  // Calculate prices
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2)
+  }
+
+  if (!loading) {
+    order.itemsPrice = addDecimals(
+      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    )
+  }
 
   useEffect(() => {
     dispatch(getOrderDetails(orderId))
@@ -56,17 +65,25 @@ const OrderScreen = (props) => {
               <ListItemText
                 primary="Shipping"
                 secondary={
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    <b>Address</b>: {order.shippingAddress.address},{' '}
-                    {order.shippingAddress.postalCode}{' '}
-                    {order.shippingAddress.city},{' '}
-                    {order.shippingAddress.country}
-                  </Typography>
+                  <>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      <strong>Name:</strong> {order.user.name}{' '}
+                      <a href={`mailto:${order.user.email}`}>
+                        {order.user.email}
+                      </a>
+                    </Typography>
+                    <Typography variant="body2" color="textPrimary">
+                      <b>Address</b>: {order.shippingAddress.address},{' '}
+                      {order.shippingAddress.postalCode}{' '}
+                      {order.shippingAddress.city},{' '}
+                      {order.shippingAddress.country}
+                    </Typography>
+                  </>
                 }
               />
             </ListItem>
@@ -156,7 +173,7 @@ const OrderScreen = (props) => {
                   <Typography>Items</Typography>
                 </Grid>
                 <Grid item md={6}>
-                  <Typography>${order.itemsPrice}</Typography>
+                  <Typography>${order.totalPrice}</Typography>
                 </Grid>
               </Grid>
             </ListItem>
@@ -178,7 +195,7 @@ const OrderScreen = (props) => {
                   <Typography>Tax</Typography>
                 </Grid>
                 <Grid item md={6}>
-                  <Typography>${order.taxePrice}</Typography>
+                  <Typography>${order.taxPrice}</Typography>
                 </Grid>
               </Grid>
             </ListItem>

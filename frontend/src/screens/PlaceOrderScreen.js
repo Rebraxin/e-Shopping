@@ -44,11 +44,11 @@ const PlaceOrderScreen = (props) => {
     cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   )
   cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 10)
-  cart.taxePrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
+  cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
   cart.totalPrice = (
     Number(cart.itemsPrice) +
     Number(cart.shippingPrice) +
-    Number(cart.taxePrice)
+    Number(cart.taxPrice)
   ).toFixed(2)
 
   const placeOrderHandler = () => {
@@ -59,7 +59,7 @@ const PlaceOrderScreen = (props) => {
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
-        taxemPrice: cart.taxPrice,
+        taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
       })
     )
@@ -209,7 +209,7 @@ const PlaceOrderScreen = (props) => {
                   <Typography>Tax</Typography>
                 </Grid>
                 <Grid item md={6}>
-                  <Typography>${cart.taxePrice}</Typography>
+                  <Typography>${cart.taxPrice}</Typography>
                 </Grid>
               </Grid>
             </ListItem>
