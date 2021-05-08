@@ -9,7 +9,6 @@ import { ORDER_DETAILS_FAIL } from '../constants/orderConstants'
 import { ORDER_PAY_REQUEST } from '../constants/orderConstants'
 import { ORDER_PAY_SUCCESS } from '../constants/orderConstants'
 import { ORDER_PAY_FAIL } from '../constants/orderConstants'
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -79,7 +78,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
   }
 }
 
-export const payOrder = (order, paymentResult) => async (
+export const payOrder = (orderId, paymentResult) => async (
   dispatch,
   getState
 ) => {
@@ -100,7 +99,7 @@ export const payOrder = (order, paymentResult) => async (
     }
 
     const { data } = await axios.put(
-      `/api/orders/${order}/pay`,
+      `/api/orders/${orderId}/pay`,
       paymentResult,
       config
     )
