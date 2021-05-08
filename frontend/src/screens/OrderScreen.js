@@ -37,8 +37,10 @@ const OrderScreen = (props) => {
   }
 
   useEffect(() => {
-    dispatch(getOrderDetails(orderId))
-  }, [])
+    if (!order || order._id !== orderId) {
+      dispatch(getOrderDetails(orderId))
+    }
+  }, [order, orderId])
 
   return loading ? (
     <CustomLoader />
@@ -83,6 +85,19 @@ const OrderScreen = (props) => {
                       {order.shippingAddress.city},{' '}
                       {order.shippingAddress.country}
                     </Typography>
+                    {order.isDelivered ? (
+                      <CustomAlert
+                        alertType="success"
+                        alertTitle="Success"
+                        alertText={`Delivered on ${order.deliveredAt}`}
+                      />
+                    ) : (
+                      <CustomAlert
+                        alertType="warning"
+                        alertTitle="Alert"
+                        alertText="Not Delivered"
+                      />
+                    )}
                   </>
                 }
               />
@@ -92,15 +107,30 @@ const OrderScreen = (props) => {
               <ListItemText
                 primary="Payment Method"
                 secondary={
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    <b>Method</b>:{' '}
-                    {order.paymentMethod ? order.paymentMethod : ''}
-                  </Typography>
+                  <>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      <b>Method</b>:{' '}
+                      {order.paymentMethod ? order.paymentMethod : ''}
+                      {order.isPaid ? (
+                        <CustomAlert
+                          alertType="success"
+                          alertTitle="Success"
+                          alertText={`Paid on ${order.paidAt}`}
+                        />
+                      ) : (
+                        <CustomAlert
+                          alertType="warning"
+                          alertTitle="Alert"
+                          alertText="Not Paid"
+                        />
+                      )}
+                    </Typography>
+                  </>
                 }
               />
             </ListItem>
