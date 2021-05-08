@@ -4,6 +4,10 @@ import { ORDER_CREATE_FAIL } from '../constants/orderConstants'
 import { ORDER_DETAILS_REQUEST } from '../constants/orderConstants'
 import { ORDER_DETAILS_SUCCESS } from '../constants/orderConstants'
 import { ORDER_DETAILS_FAIL } from '../constants/orderConstants'
+import { ORDER_PAY_REQUEST } from '../constants/orderConstants'
+import { ORDER_PAY_SUCCESS } from '../constants/orderConstants'
+import { ORDER_PAY_FAIL } from '../constants/orderConstants'
+import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
 export const orderCreateReducer = (state = {}, action) => {
   switch (action.type) {
@@ -56,6 +60,36 @@ export const orderDetailsReducer = (
         loading: false,
         error: action.payload,
       }
+    }
+    default: {
+      return {
+        ...state,
+      }
+    }
+  }
+}
+
+export const orderPayReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ORDER_PAY_REQUEST: {
+      return {
+        loading: true,
+      }
+    }
+    case ORDER_PAY_SUCCESS: {
+      return {
+        loading: false,
+        success: true,
+      }
+    }
+    case ORDER_PAY_FAIL: {
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    }
+    case ORDER_PAY_RESET: {
+      return {}
     }
     default: {
       return {
